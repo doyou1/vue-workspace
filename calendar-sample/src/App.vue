@@ -1,16 +1,13 @@
 <template>
-  <calendar-view></calendar-view>
-  <date-button></date-button>
+  <home-view></home-view>
 </template>
 
 <script>
-import CalendarView from './components/CalendarView.vue'
-import DateButton from './components/DateButton.vue'
+import HomeView from './components/HomeView.vue'
 export default {
   name: 'App',
   components: {
-    CalendarView,
-    DateButton
+    HomeView
   }
 }
 </script>
