@@ -20,39 +20,82 @@
     </div>
   </nav>
 
+  <p>line-view</p>
   <line-view class="m-10" :chartData="chartData"></line-view>
 
   <!-- for debug -->
   <!-- <div class="m-10">parent: {{ chartData }}</div> -->
-  <input-view class="m-10" v-model="chartData"></input-view>
-  <doughnut-chart />
+  <!-- <input-view class="m-10" v-model="chartData"></input-view> -->
+  <p>doughnut-chart</p>
+  <doughnut-chart class="m-10" > </doughnut-chart>
 
+  <p>area-chart</p>
+  <area-chart class="m-10" :chartData="fillChartData" :chartOptions="chartOptions"></area-chart>
 </template>
 
 <script>
 import LineView from "./LineView.vue";
-import InputView from "./InputView.vue";
+// import InputView from "./InputView.vue";
 import DoughnutChart from "./DoughnutChart.vue";
+import AreaChart from "./AreaChart.vue";
 
 export default {
   name: "HomeView",
   components: {
     LineView,
-    InputView,
-    DoughnutChart
+    // InputView,
+    DoughnutChart,
+    AreaChart,
   },
   data() {
     return {
       chartData: {
         labels: ["January", "February", "March"],
         datasets: [
-          { label: "Data 1", backgroundColor: "#ff0000", data: [40, 20, 12], borderColor: '#ff0000', borderWidth: 1 },
-          { label: "Data 2", backgroundColor: "#00ff00", data: [30, 30, 18], borderColor: '#00ff00', borderWidth: 1 },
-          { label: "Data 3", backgroundColor: "#0000ff", data: [50, 40, 24], borderColor: '#0000ff', borderWidth: 1 },
+          {
+            label: "Data 1",
+            backgroundColor: "#ff0000",
+            data: [40, 20, 12],
+            borderColor: "#ff0000",
+            borderWidth: 1,
+          },
+          {
+            label: "Data 2",
+            backgroundColor: "#00ff00",
+            data: [30, 30, 18],
+            borderColor: "#00ff00",
+            borderWidth: 1,
+          },
+          {
+            label: "Data 3",
+            backgroundColor: "#0000ff",
+            data: [50, 40, 24],
+            borderColor: "#0000ff",
+            borderWidth: 1,
+          },
+        ],
+      },
+      fillChartData: {
+        labels: ["January", "February", "March"],
+        datasets: [
+          {
+            label: "Data 1",
+            backgroundColor: "#ff000077",
+            data: [40, 20, 12],
+           fill: "start"
+          },
+          {
+            label: "Data 3",
+            backgroundColor: "#0000ff",
+            data: [30, 40, 24],
+          
+          },
         ],
       },
       chartOptions: {
         responsive: true,
+        maintainAspectRatio: false,
+        tension: 0.4,
       },
     };
   },

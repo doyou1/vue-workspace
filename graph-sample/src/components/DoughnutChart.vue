@@ -1,8 +1,9 @@
 <template>
     <Doughnut
+    class="w-1/5 h-1/5"
+
         :chart-data="chartData"
         :chart-options="chartOptions"
-
         />
 </template>
 
