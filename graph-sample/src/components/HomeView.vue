@@ -25,17 +25,21 @@
   <!-- for debug -->
   <!-- <div class="m-10">parent: {{ chartData }}</div> -->
   <input-view class="m-10" v-model="chartData"></input-view>
+  <doughnut-chart />
+
 </template>
 
 <script>
 import LineView from "./LineView.vue";
 import InputView from "./InputView.vue";
+import DoughnutChart from "./DoughnutChart.vue";
 
 export default {
   name: "HomeView",
   components: {
     LineView,
     InputView,
+    DoughnutChart
   },
   data() {
     return {

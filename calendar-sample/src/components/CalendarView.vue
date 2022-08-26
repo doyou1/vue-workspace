@@ -1,5 +1,5 @@
 <template>
-  <div id="calendar-view" class="flex justify-around">
+  <div id="calendar-view" class="flex justify-center grid gird-rows-2">
     <div>
       <DatePicker v-model="date" />
     </div>

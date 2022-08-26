@@ -1,10 +1,10 @@
 <template>
-  <div id="date-button">
+  <div id="date-button" class="flex justify-center grid gird-rows-2">
     <div>
       <DatePicker v-model="date">
         <template v-slot="{ inputValue, togglePopover }">
           <input
-            class="shadow appearance-none border-2 rounded py-2 px-3 text-gray-700 border-blue-500 leading-tight"
+            class="border-2 rounded py-2 px-3 text-gray-700 border-blue-500 leading-tight"
             type="text"
             @click="togglePopover"
             :value="inputValue"
