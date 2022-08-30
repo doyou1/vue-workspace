@@ -5,11 +5,14 @@ export const useProductStore = defineStore("ProductStore", {
     // state
     state: () => {
         return {
-            // products: products,
-            products,
+            products: [],
+        }
+    },
+    // actions
+    actions: {
+        fill() {
+            this.products = products;
         }
     }
-    // actions
-
     // getters
 });

@@ -1,5 +1,5 @@
 <template>
-  <div v-for="(product, idx) in products" :key="idx">
+  <div :v-if="product !== null" v-for="(product, idx) in products" :key="idx">
     <div>
       {{product.name}}
     </div>
@@ -11,6 +11,9 @@
     </div>
     <hr>
   </div>
+  <button @click="fillData">
+    Data Fill
+  </button>
 </template>
 
 <script>
@@ -26,7 +29,13 @@ export default {
     const store = useProductStore();
     const { products } = storeToRefs(store);
     return {
+      store,
       products,
+    }
+  },
+  methods: {
+    fillData() {
+      this.store.fill();
     }
   }
 };
