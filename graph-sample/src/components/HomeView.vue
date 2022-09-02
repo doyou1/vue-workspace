@@ -21,7 +21,9 @@
   </nav>
 
   <p>DayState Chart</p>
-  <day-state-chart/>
+  <div class="bg-gray-800">
+    <day-state-chart/>
+  </div>
 
   <p>line-view</p>
   <line-view class="m-10" :chartData="chartData"></line-view>
