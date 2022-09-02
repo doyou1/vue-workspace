@@ -1,0 +1,603 @@
+<template>
+  <Line
+  class="text-black"
+    :chart-options="chartOptions"
+    :chart-data="chartData"
+    :plugins="plugins"
+  />
+   time: {{ monitors[0].time }}
+   solar: {{ monitors[0].solar }}
+   generated_energy: {{ monitors[0].generated_energy }}
+   perchased_energy: {{ monitors[0].perchased_energy }}
+   accumulated_energy: {{ monitors[0].accumulated_energy }}
+   consumption_energy: {{ monitors[0].consumption_energy }}
+   selected_prediction_energy: {{ monitors[0].selected_prediction_energy }}
+</template>
+
+<script>
+import { Line } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  CategoryScale,
+  Filler,
+} from "chart.js";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  CategoryScale,
+  Filler
+);
+
+export default {
+  components: {
+    Line,
+  },
+  data() {
+    return {
+      chartData: {
+        labels: [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+        ],
+        datasets: [
+          {
+            label: "Data 1",
+            backgroundColor: "#FFC10066",
+            data: [
+              0, 1, 3, 4, 2, 2, 0, 1, 3, 4, 1, 2, 0, 1, 3, 4, 3, 2, 0, 1, 3, 4,
+              3, 2,
+            ],
+            fill: "start",
+          },
+          {
+            label: "Data 2",
+            backgroundColor: "#000000",
+            borderColor: "#000000",
+            borderWidth: 1,
+            data: [
+              0, 1, 3, 4, 3, 2, 0, 1, 3, 4, 2, 2, 0, 1, 3, 4, 3, 2, 0, 1, 3, 4,
+              1, 2,
+            ],
+          },
+        ],
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        tension: 0.4,
+        interaction: {
+          mode: "nearest",
+          axis: "x",
+          intersect: false,
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: "white",
+            },
+            grid: {
+              display: false,
+            },
+            lineOnHover: {
+              enabled: true,
+              lineColor: "#bbb",
+              lineWidth: 1,
+            },
+          },
+          y: {
+            title: {
+              text: "kWh",
+              display: true,
+              color: "white",
+              font: {
+                size: 16,
+              },
+            },
+            suggestedMin: 0,
+            suggestedMax: 4,
+            ticks: {
+              color: "white",
+              stepSize: 1,
+            },
+            grid: {
+              display: true,
+              color: "white",
+            },
+          },
+        },
+        plugins: {
+          tooltip: {
+            enabled: true,
+            callbacks: {},
+          },
+        },
+      },
+      monitors: [
+        {
+          time: 0,
+          solar: 501.25,
+          generated_energy: 111.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 0.5,
+          solar: 501.25,
+          generated_energy: 112.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 1,
+          solar: 501.25,
+          generated_energy: 113.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 1.5,
+          solar: 501.25,
+          generated_energy: 114.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 2.0,
+          solar: 501.25,
+          generated_energy: 115.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 2.5,
+          solar: 501.25,
+          generated_energy: 116.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 3,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 3.5,
+          solar: 501.25,
+          generated_energy: 118.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 4,
+          solar: 501.25,
+          generated_energy: 119.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 4.5,
+          solar: 501.25,
+          generated_energy: 111.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 5,
+          solar: 501.25,
+          generated_energy: 117.151,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 5.5,
+          solar: 501.25,
+          generated_energy: 117.153,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 6,
+          solar: 501.25,
+          generated_energy: 117.155,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 6.5,
+          solar: 501.25,
+          generated_energy: 117.157,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 7,
+          solar: 501.25,
+          generated_energy: 117.159,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 7.5,
+          solar: 501.25,
+          generated_energy: 117.151,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 8,
+          solar: 501.25,
+          generated_energy: 117.111,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 8.5,
+          solar: 501.25,
+          generated_energy: 117.1,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 9,
+          solar: 501.25,
+          generated_energy: 117.12,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 9.5,
+          solar: 501.25,
+          generated_energy: 117.123,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 10,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 10.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 11,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 11.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 12,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 12.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 13,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 13.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 14,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 14.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 15,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 15.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 16,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 16.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 17,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 17.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 18,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 18.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 19,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 19.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 20,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 20.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 21,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 21.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 22,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 22.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 23,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+        {
+          time: 23.5,
+          solar: 501.25,
+          generated_energy: 117.152,
+          perchased_energy: 0,
+          accumulated_energy: 117.152,
+          consumption_energy: 0,
+          selected_prediction_energy: 115.0,
+        },
+      ],
+    };
+  },
+  mounted() {
+    this.setLabels();
+  },
+  methods : {
+    setLabels() {
+        console.log("setLabels");
+        console.log(this.monitors[0].time);
+        console.log(this.monitors[0].solar);
+        console.log(this.monitors[0].generated_energy);
+        console.log(this.monitors[0].perchased_energy);
+        console.log(this.monitors[0].accumulated_energy);
+        console.log(this.monitors[0].consumption_energy);
+        console.log(this.monitors[0].selected_prediction_energy);
+        
+    }
+  }
+};
+</script>
+
+<style></style>

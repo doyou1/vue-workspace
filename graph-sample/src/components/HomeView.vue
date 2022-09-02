@@ -20,6 +20,9 @@
     </div>
   </nav>
 
+  <p>DayState Chart</p>
+  <day-state-chart/>
+
   <p>line-view</p>
   <line-view class="m-10" :chartData="chartData"></line-view>
 
@@ -38,6 +41,7 @@ import LineView from "./LineView.vue";
 // import InputView from "./InputView.vue";
 import DoughnutChart from "./DoughnutChart.vue";
 import AreaChart from "./AreaChart.vue";
+import DayStateChart from "./DayStateChart.vue";
 
 export default {
   name: "HomeView",
@@ -46,6 +50,7 @@ export default {
     // InputView,
     DoughnutChart,
     AreaChart,
+    DayStateChart,
   },
   data() {
     return {
