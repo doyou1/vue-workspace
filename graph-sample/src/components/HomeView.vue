@@ -20,6 +20,11 @@
     </div>
   </nav>
 
+  <p>PcsDetail Chart</p>
+  <div class="bg-gray-800">
+    <pcs-detail-chart />
+  </div>
+
   <p>DayState Chart</p>
   <div class="bg-gray-800">
     <day-state-chart/>
@@ -39,11 +44,12 @@
 </template>
 
 <script>
-import LineView from "./LineView.vue";
+import LineView from "./charts/LineChart.vue";
 // import InputView from "./InputView.vue";
-import DoughnutChart from "./DoughnutChart.vue";
-import AreaChart from "./AreaChart.vue";
-import DayStateChart from "./DayStateChart.vue";
+import DoughnutChart from "./charts/DoughnutChart.vue";
+import AreaChart from "./charts/AreaChart.vue";
+import DayStateChart from "./charts/DayStateChart.vue";
+import PcsDetailChart from "./charts/PcsDetailChart.vue";
 
 export default {
   name: "HomeView",
@@ -53,6 +59,7 @@ export default {
     DoughnutChart,
     AreaChart,
     DayStateChart,
+    PcsDetailChart,
   },
   data() {
     return {

@@ -1,0 +1,21 @@
+<template>
+  <svg
+    width="70"
+    height="10"
+    viewBox="0 0 70 10"
+    fill="#FF0000"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="70" height="10" :fill="fill" />
+  </svg>
+</template>
+
+<script>
+export default {
+  props: {
+    fill: String,
+  },
+};
+</script>
+
+<style></style>
