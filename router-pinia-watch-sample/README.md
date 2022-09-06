@@ -1,4 +1,4 @@
-# router-parameter-sample
+# router-pinia-watch-sample
 
 ## Project setup
 ```
