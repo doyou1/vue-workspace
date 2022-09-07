@@ -8,6 +8,7 @@
       class="z-0 w-full h-full"
       :chart-data="chartData"
       :chart-options="chartOptions"
+      :plugins="plugins"
     />
   </div>
 </template>
@@ -57,6 +58,7 @@ export default {
             borderDash: [10, 2], // 선과 빈공간 비율
             pointStyle: "dash",
             data: [],
+            yAxisID: 'rightSide',
           },
         ],
         labels: [],
@@ -86,7 +88,71 @@ export default {
             display: false,
           },
         },
+        layout: {
+          padding: {
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              text: "left title",
+              display: true,
+              color: "white",
+              font: {
+                size: 16,
+              },
+            },
+          },
+          rightSide: {
+            beginAtZero: true,
+            position: "right",
+            title: {
+              text: "right title",
+              display: true,
+              color: "white",
+              font: {
+                size: 16,
+              },
+            },
+          }
+        },
       },
+      plugins: [
+        // {
+        //   id: "rightSideTitle",
+        //   afterDatasetsDraw(chart) {
+        //     // console.log(args);
+        //     // console.log(pluginsOptions);
+        //     const {
+        //       ctx,
+        //       chartArea: {
+        //         left,
+        //         // right,
+        //         top,
+        //         // bottom,
+        //         width,
+        //         height,
+        //       },
+        //     } = chart;
+
+        //     console.log(chart.scales.y);
+
+        //     ctx.save();
+
+        //     const angle = Math.PI / 180;
+        //     ctx.translate(0, 0);
+        //     ctx.rotate(270 * angle);
+        //     ctx.font = "16px";
+        //     ctx.fillStyle = "#FFFFFF";
+
+        //     const y = height / -2 - top - 20;
+        //     const x = width + left + 20;
+        //     ctx.fillText("kWh/m2", y, x);
+        //     ctx.restore();
+        //   },
+        // },
+      ],
     };
   },
   mounted() {
