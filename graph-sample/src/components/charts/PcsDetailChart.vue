@@ -5,11 +5,15 @@
       :chartData="chartData"
     />
     <Bar
+      ref="chart"
       class="z-0 w-full h-full"
       :chart-data="chartData"
       :chart-options="chartOptions"
       :plugins="plugins"
     />
+    <button @click="updateChart">
+      update chart
+    </button>
   </div>
 </template>
 
@@ -20,6 +24,8 @@ import { Chart as ChartJS, registerables } from "chart.js";
 import ChartLegend from "../commons/ChartLegend.vue";
 
 ChartJS.register(...registerables);
+
+let delayed = false;
 
 export default {
   components: {
@@ -36,6 +42,8 @@ export default {
             pointStyle: "rect",
             backgroundColor: "#FFFF00",
             data: [],
+            legendStyle: "bar",
+            legendColor: "#FFFF00",
           },
           // 2022年9月3日9:00 予測断面(kWh)
           {
@@ -46,6 +54,9 @@ export default {
             borderWidth: 1,
             borderDash: [10, 2], // 선과 빈공간 비율
             pointStyle: "dash",
+            legendStyle: "area",
+            legendColor: "#FFFFFF",
+
             data: [],
           },
           // 2022年9月3日18:00 予測断面(kWh)
@@ -57,6 +68,9 @@ export default {
             borderWidth: 1,
             borderDash: [10, 2], // 선과 빈공간 비율
             pointStyle: "dash",
+            legendStyle: "dash",
+            legendColor: "#FF0000",
+
             data: [],
             yAxisID: 'rightSide',
           },
@@ -64,6 +78,18 @@ export default {
         labels: [],
       },
       chartOptions: {
+        animation: {
+      onComplete: () => {
+        delayed = true;
+      },
+      delay: (context) => {
+        let delay = 0;
+        if (context.type === 'data' && context.mode === 'default' && !delayed) {
+          delay = 500;
+        }
+        return delay;
+      },
+    },
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
@@ -82,6 +108,12 @@ export default {
                   return `${tooltipItem[0].label}:00`;
                 }
               },
+                                  labelPointStyle: function() {
+                        return {
+                            pointStyle: 'triangle',
+                            rotation: 0
+                        };
+                    }
             },
           },
           legend: {
@@ -193,6 +225,8 @@ export default {
         randomArr2.push(Math.floor(Math.random() * labels.length));
       }
       this.chartData.datasets[2].data = randomArr2;
+
+      console.log(this.$refs.chart.updateChart());
     },
   },
 };

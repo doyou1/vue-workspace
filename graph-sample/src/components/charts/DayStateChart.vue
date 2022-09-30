@@ -2,7 +2,6 @@
   <Bar
     :chart-options="chartOptions"
     :chart-data="chartData"
-    :plugins="plugins"
   />
 </template>
 

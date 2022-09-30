@@ -20,6 +20,10 @@
     </div>
   </nav>
 
+  <p>PcsDetailChartComposition</p>
+  <div class="bg-gray-800">
+    <PcsDetailChartComposition />
+  </div>
   <p>PcsDetail Chart</p>
   <div class="bg-gray-800">
     <pcs-detail-chart />
@@ -27,7 +31,7 @@
 
   <p>DayState Chart</p>
   <div class="bg-gray-800">
-    <day-state-chart/>
+    <day-state-chart />
   </div>
 
   <p>line-view</p>
@@ -37,10 +41,14 @@
   <!-- <div class="m-10">parent: {{ chartData }}</div> -->
   <!-- <input-view class="m-10" v-model="chartData"></input-view> -->
   <p>doughnut-chart</p>
-  <doughnut-chart class="m-10" > </doughnut-chart>
+  <doughnut-chart class="m-10"> </doughnut-chart>
 
   <p>area-chart</p>
-  <area-chart class="m-10" :chartData="fillChartData" :chartOptions="chartOptions"></area-chart>
+  <area-chart
+    class="m-10"
+    :chartData="fillChartData"
+    :chartOptions="chartOptions"
+  ></area-chart>
 </template>
 
 <script>
@@ -50,6 +58,7 @@ import DoughnutChart from "./charts/DoughnutChart.vue";
 import AreaChart from "./charts/AreaChart.vue";
 import DayStateChart from "./charts/DayStateChart.vue";
 import PcsDetailChart from "./charts/PcsDetailChart.vue";
+import PcsDetailChartComposition from "./charts/PcsDetailChartComposition.vue";
 
 export default {
   name: "HomeView",
@@ -60,6 +69,7 @@ export default {
     AreaChart,
     DayStateChart,
     PcsDetailChart,
+    PcsDetailChartComposition,
   },
   data() {
     return {
@@ -96,13 +106,12 @@ export default {
             label: "Data 1",
             backgroundColor: "#ff000077",
             data: [40, 20, 12],
-           fill: "start"
+            fill: "start",
           },
           {
             label: "Data 3",
             backgroundColor: "#0000ff",
             data: [30, 40, 24],
-          
           },
         ],
       },
