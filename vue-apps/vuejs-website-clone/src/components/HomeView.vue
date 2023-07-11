@@ -1,6 +1,6 @@
 <template>
   <div id="wrap" class="grid grid-rows-1">
-    <div id="nav-bar" ref="navBar" class="fixed w-full h-auto top-0 flex justify-around my-4 text-sm">
+    <div id="nav-bar" ref="navBar" class="fixed w-full h-auto top-0 flex justify-around my-4 text-sm" >
       <div id="nav-bar-left" class="grid grid-flow-col">
         <span id="nav-home-logo" class="group hover:cursor-pointer">
           <img class="inline mx-1 w-6 h-6 group-hover:opacity-25" alt="Vue logo" src="../assets/logo.png">
@@ -17,7 +17,7 @@
       </div>
 
       <div id="nav-buttons" class="grid grid-flow-col">
-        <div class="mx-2  relative hover:cursor-pointer group grid-rows-1 static"
+        <div class="mx-2 relative hover:cursor-pointer group grid-rows-1 static"
           v-on:mouseover="hover('Docs', true)" v-on:mouseleave="hover('Docs', false)" 
         >
           <div>
@@ -169,7 +169,30 @@
     </div>
 
     <div id="content" class="w-full">
-      <div id="content-top-spacing" :style="{paddingTop: `${contentPaddingTop}`}"></div>
+      <div id="content-top-spacing" :style="{paddingTop: `${contentPaddingTop}px`}" />
+    
+      <div class="w-full h-auto pt-48 pb-5 px-24 my-2 text-7xl font-black tracking-tighter">
+        <div>The <span id="progressive">Progressive</span></div>
+        <div>JavaScript Framework</div>
+      </div>
+
+      <div class="w-full h-auto my-2 text-2xl text-[#606060] opacity-60 tracking-tighter">
+        An approachable, performant and versatile framework for building web user interfaces.
+      </div>
+
+      <div class="w-full h-auto my-4 flex justify-center">
+        <div class="text-lg font-bold mx-3 px-2 py-1 group bg-[#42b883] rounded-md hover:cursor-pointer opacity-80 hover:opacity-100">
+          <img class="mx-1 inline w-5 h-5 rounded-full" alt="Play Icon" src="../assets/play_icon.svg">
+          <span class="mx-1 text-white ">Why Vue</span>
+        </div>
+        <div class="text-lg font-bold mx-3 px-2 py-1 group rounded-md hover:cursor-pointer">
+          <span class="ml-1 mr-0.5 text-[#476582]">Get Started</span>
+          <img class="mr-1 group-hover:ml-1 group-hover:mr-0 inline w-5 h-5" alt="Right Arrow Icon" src="../assets/right_arrow_icon.svg">
+        </div>
+        <div class="text-lg font-bold mx-3 px-2 py-1 rounded-md hover:cursor-pointer">
+          <span class="mx-1 text-[#476582]">Install</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -209,9 +232,18 @@
   )
 
   const contentPaddingTop = computed(() => {
-    return `${Math.ceil(navBarSize.height) + 10}px`;
+    return `${Math.ceil(navBarSize.height) + 24}`;
   })
 
 </script>
   
 <style src="@vueform/toggle/themes/default.css"></style>
+
+<style>
+#progressive {
+  background: 
+  -webkit-linear-gradient(315deg,#42d392 25%,#647eff);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+</style>
