@@ -187,7 +187,7 @@
         </div>
         <div class="text-lg font-bold mx-3 px-2 py-1 group rounded-md hover:cursor-pointer">
           <span class="ml-1 mr-0.5 text-[#476582]">Get Started</span>
-          <img class="mr-1 group-hover:ml-1 group-hover:mr-0 inline w-5 h-5" alt="Right Arrow Icon" src="../assets/right_arrow_icon.svg">
+          <img class="mr-1 group-hover:ml-1 group-hover:mr-0 duration-200 inline w-5 h-5" alt="Right Arrow Icon" src="../assets/right_arrow_icon.svg">
         </div>
         <div class="text-lg font-bold mx-3 px-2 py-1 rounded-md hover:cursor-pointer">
           <span class="mx-1 text-[#476582]">Install</span>
