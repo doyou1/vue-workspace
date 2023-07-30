@@ -14,11 +14,12 @@ const response = ref("");
 const onSubmit = () => {
 
     const prompt = `
-    다음 동작을 수행하세요:
-    1- ${searchText.value}와 관련된 기술 키워드 리스트와 해당 키워드 관련 예제를 html, css, js 코드로 제공받습니다.
-    2- 출력의 형태는 다음의 JSON 객체의 형태와 같습니다 : 
+    아래의 조건에 충족하는 응답을 제공하시오.
+    1- ${searchText.value}와 관련된 기술 키워드 리스트와 해당 키워드 관련 예제를 html, css, javascript 코드로 제공받습니다.
+    2- 다음의 JSON 형식로만 응답을 제공합니다.
+    만약 관련 결과가 없다면, 빈 배열을 Response함으로써 관련한 키워드가 없음을 알립니다.
     {
-      'keyword-list' : [
+      'keywords' : [
         {
           'id' : 0,
           'keyword' : '...',
@@ -35,12 +36,9 @@ const onSubmit = () => {
         },
       ]
     }
-    3- 만약 관련 키워드가 없다면, 출력의 형태는 다음의 JSON 객체의 형태와 같습니다.
-    {
-      'keyword-list' : []
-    }
-    4- 출력은 모두 영어로 한다.
+    3- JSON 데이터 이외에 추가적인 설명을 포함하지 않습니다.
     `;
+    console.log(prompt);
     processChatGPT(prompt)
 }
 
@@ -55,8 +53,11 @@ const processChatGPT = async (prompt) => {
         },
       );
       response.value = chatCompletion.data.choices[0].message.content;
+      
       // response.value = chatCompletion
       console.log(response.value);
+
+      console.log(typeof chatCompletion.data.choices[0].message.content);
 }
 
 
