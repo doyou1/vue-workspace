@@ -11,9 +11,12 @@
     "@codemirror/lang-css": "^6.2.0",
     "@codemirror/lang-html": "^6.4.5",
     "@codemirror/lang-javascript": "^6.1.9",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "codemirror": "^6.0.1",
     "vue": "^3.3.4",
-    "vue-codemirror": "^6.1.1"
+    "vue-codemirror": "^6.1.1",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
