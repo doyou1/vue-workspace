@@ -11,6 +11,7 @@ export default {
     subText: "String",
     mediaHref: "String",
     supportingText: "String",
+    buttonText: "String",
   }
 };
 
@@ -41,7 +42,7 @@ export const Secondary = {
     template: '<Card v-bind="args" />',
   }),
   args: {
-    title: "title", subText: "subText", mediaHref: "/vite.svg"
+    title: "title", subText: "subText", mediaHref: "vite.svg"
   },
 };
 
@@ -54,6 +55,19 @@ export const Third = {
     template: '<Card v-bind="args" />',
   }),
   args: {
-    title: "title", subText: "subText", mediaHref: "/vite.svg", supportingText: "supportingText"
+    title: "title", subText: "subText", mediaHref: "vite.svg", supportingText: "supportingText"
+  },
+};
+
+export const Four = {
+  render: (args) => ({
+    components: { Card },
+    setup() {
+      return { args };
+    },
+    template: '<Card v-bind="args" />',
+  }),
+  args: {
+    title: "title", subText: "subText", mediaHref: "vite.svg", supportingText: "supportingText", buttonText: "go"
   },
 };
