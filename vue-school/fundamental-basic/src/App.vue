@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div id="app" class="content mx-auto py-6">
     <div class="title">Coffee Plans</div>
     <div class="subText">We travel the world to source the very best single origin coffee for you</div>
     <PlanPicker />
