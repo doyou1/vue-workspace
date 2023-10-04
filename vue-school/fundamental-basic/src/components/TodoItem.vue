@@ -4,6 +4,8 @@
     <span :class="{done: completed}">
       <slot ></slot>
     </span>
+    <slot name="description"></slot>
+    <button><slot name="button-text"></slot></button>
   </div>
 </template>
 
