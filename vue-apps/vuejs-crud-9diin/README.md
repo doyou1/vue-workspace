@@ -10,3 +10,18 @@
 
 - Vue3(Composition API)
 - vue-router, pinia, axios, element-plus, @element-plus/icons-vue
+
+---
+
+### 2. 프로젝트 환경설정
+- 페이지 라우팅 : Vue Router를 활용한 페이지 라우팅
+    - `npm install vue-router`
+- 상태관리 : Pinia로 중앙집중식 State 관리
+    - `npm install pinia`
+- 서버통신 : Axios로 API 통신
+    - `npm install axios`
+- UI 라이브러리 : Element Plus를 활용하여 필요한 부분에서의 UI 구현
+    - `npm install element-plus --save`
+    - `npm install @element-plus/icons-vue`
+
+---
