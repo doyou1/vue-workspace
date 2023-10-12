@@ -1,0 +1,28 @@
+<script setup>
+</script>
+
+<template>
+  <div class="memo">
+    <ul>
+      <li>메모 1 내용</li>
+      <li>메모 2 내용</li>
+      <li>메모 3 내용</li>
+      <li>메모 4 내용</li>
+      <li>메모 5 내용</li>
+    </ul>
+  </div>
+</template>
+
+<style scoped>
+.memo ul {
+  list-style: none;
+  padding: 15px 0;
+  margin: 0;
+}
+
+.memo ul li {
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+</style>
