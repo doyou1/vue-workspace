@@ -1,0 +1,3 @@
+- references
+    - https://www.youtube.com/watch?v=QS3ezmnJSok&t=96s
+    - https://github.com/TuenTuenna/vue_js_tutorial/tree/01_ref_reactive
