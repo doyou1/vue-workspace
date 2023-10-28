@@ -4,8 +4,6 @@ import FallbackSlot from "@/components/slot/FallbackSlot.vue";
 import NamedSlot from "@/components/slot/NamedSlot.vue";
 import NamedScopedSlot from "@/components/slot/NamedScopedSlot.vue";
 import MouseTracker from "@/components/slot/MouseTracker.vue";
-
-
 </script>
 
 <template>

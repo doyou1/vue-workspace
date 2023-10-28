@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "lodash": "^4.17.21",
+    "vue": "^3.3.4",
+    "vue-lodash": "^2.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
