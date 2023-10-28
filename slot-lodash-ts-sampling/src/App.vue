@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import AboutRecursion from "@/components/AboutRecursion.vue";
 import AboutSlot from "@/components/AboutSlot.vue";
+import AboutLodash from "@/components/AboutLodash.vue";
 </script>
 
 <template>
@@ -10,6 +11,9 @@ import AboutSlot from "@/components/AboutSlot.vue";
   </div>
   <div class="border">
     <AboutSlot />
+  </div>
+  <div class="border">
+    <AboutLodash />
   </div>
 </template>
 

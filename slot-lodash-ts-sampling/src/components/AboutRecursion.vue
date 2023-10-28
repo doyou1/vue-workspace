@@ -15,7 +15,7 @@ const data: RecursionData = {
       child: {
         title: "Parent child child child",
         child: {
-          title: "Parent child child child",
+          title: "Parent child child child child",
         },
       },
     },
