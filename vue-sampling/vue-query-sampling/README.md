@@ -102,3 +102,254 @@ Vue Query를 계속해서 배우고 사용할 때 이 내용을 기억해야 합
 
 - 쿼리 결과는 기본적으로 구조적으로 공유되어 데이터가 실제로 변경되었는지 여부를 감지하고 그렇지 않은 경우 데이터 참조는 변경되지 않고 그대로 유지되어 가치 안정화에 더 도움이 됩니다. 이 개념이 이질적으로 들린다면 걱정하지 마십시오! 99.9%의 경우 이를 비활성화할 필요가 없으며 이를 통해 제로 비용으로 앱 성능을 향상시킬 수 있습니다.
     > 구조 공유는 JSON 호환 값에서만 작동하므로 다른 값 유형은 항상 변경된 것으로 간주됩니다. 예를 들어 큰 응답 때문에 성능 문제가 발생하는 경우 `config.structuralSharing` 플래그를 사용하여 이 기능을 사용하지 않도록 설정할 수 있습니다. 쿼리 응답에서 JSON 호환되지 않는 값을 처리하는 경우에도 데이터가 변경되었는지 여부를 탐지하려는 경우 `config.isDataEqual`로 데이터 비교 함수를 정의할 수 있습니다.
+
+### Queries
+- 쿼리는 고유한 키에 연결된 데이터의 비동기 소스에 대한 선언적 종속성입니다. 쿼리는 서버에서 데이터를 가져오는 데 모든 Promise 기반 메서드(GET 및 POST 메서드 포함)와 함께 사용할 수 있습니다. 메서드가 서버의 데이터를 수정하는 경우 대신 Mutations를 사용하는 것이 좋습니다.
+
+- 구성요소 또는 사용자 정의 후크에서 쿼리를 구독하려면 다음과 같은 내용으로 `useQuery` 후크를 호출합니다:
+    - 쿼리에 대한 고유 키
+    - 다음과 같은 약속을 반환하는 함수:
+        - 데이터를 해결합니다
+        - 오류를 던집니다
+
+- 제공하는 고유 키는 내부적으로 응용프로그램 전체에서 쿼리를 다시 불러오고 캐싱하고 공유하는 데 사용됩니다.
+
+- `useQuery`에 의해 반환되는 쿼리 결과에는 템플릿 작성에 필요한 쿼리에 대한 모든 정보와 데이터의 기타 용도가 포함됩니다:
+
+```javascript
+const result = useQuery("todos", fetchTodoList);
+```
+
+- `result` 개체에는 생산성을 높이기 위해 주의해야 할 몇 가지 매우 중요한 상태가 포함되어 있습니다. 쿼리는 특정 순간에만 다음 상태 중 하나에 있을 수 있습니다:
+    - `isLoading` or `status === loading` - 쿼리에 데이터가 없으며 현재 가져오는 중입니다
+    - `isError` 또는 `status === error` - 쿼리에 오류가 발생했습니다
+    - `isSuccessor` `status === success` - 쿼리가 성공했으며 데이터를 사용할 수 있습니다
+    - `isIdle` or `status === idle` - 현재 쿼리가 비활성화되어 있습니다(자세한 내용은 잠시 후에 확인하실 수 있습니다)
+
+- 기본 상태 이외에도 쿼리의 상태에 따라 더 많은 정보를 사용할 수 있습니다:
+
+     - `error` - 쿼리가 `isError` 상태인 경우 `error` 속성을 통해 오류를 사용할 수 있습니다.
+     - `data` - 쿼리가 `success` 상태이면 데이터 속성을 통해 데이터를 사용할 수 있습니다.
+     - `isFetching` - 임의의 상태에서 쿼리가 언제든지 가져오기 중이면(배경 재페칭 포함) `isFetching`은 `true`가 됩니다.
+
+> `result` 개체의 모든 속성은 `ref`로 감싸므로 반응성을 유지하면서 안전하게 구조화할 수 있습니다.
+
+- 대부분의 쿼리의 경우 `isLoading` 상태를 확인한 다음 `isError` 상태를 확인한 다음 마지막으로 데이터를 사용할 수 있다고 가정하고 성공 상태를 렌더링하면 됩니다:
+
+```javacsript
+<script setup>
+import { useQuery } from "vue-query";
+
+function useTodosQuery() {
+    return useQuery("todos", fetchTodoList);
+}
+
+const { isLoading, isError, data, error } = useTodoQuery();
+</script>
+
+<template>
+  <span v-if="isLoading">Loading...</span>
+  <span v-else-if="isError">Error: {{ error.message }}</span>
+  <!-- We can assume by this point that `isSuccess === true` -->
+  <ul v-else>
+    <li v-for="todo in data" :key="todo.id">{{ todo.title }}</li>
+  </ul>
+</template>
+```
+
+### Query Keys
+- Vue Query는 핵심적으로 쿼리 키를 기반으로 쿼리 캐싱을 관리합니다. 쿼리 키는 문자열처럼 단순할 수도 있고, 수많은 문자열과 중첩된 개체의 배열처럼 복잡할 수도 있습니다. 쿼리 키가 직렬화 가능하고 쿼리 데이터에 고유한 것이라면 사용할 수 있습니다!
+
+- String-Only Query Keys
+    - 가장 간단한 형태의 키는 배열이 아니라 개별 문자열입니다. 문자열 쿼리 키가 전달되면 내부적으로 문자열을 쿼리 키의 유일한 항목으로 하는 배열로 변환됩니다. 이 형식은 다음과 같은 경우에 유용합니다:
+        - 일반 목록/인덱스 리소스
+        - 비계층적 리소스
+
+```javascript
+// A list of todos
+useQuery('todos', ...) // queryKey === ['todos']
+
+// Somthing else, whatever!
+useQuery('somethingSpecial', ...) // queryKey == ['somethingSpecial']
+```
+
+- Array Keys
+    - 쿼리가 데이터를 고유하게 설명하기 위해 더 많은 정보가 필요한 경우 문자열과 임의의 수의 직렬화 가능한 개체가 있는 배열을 사용하여 쿼리를 설명할 수 있습니다. 이는 다음과 같은 경우에 유용합니다:
+    - 계층적 리소스 또는 중첩 리소스
+        - 아이템을 고유하게 식별하기 위해 ID, 인덱스 또는 기타 프리미티브를 전달하는 것이 일반적입니다
+    - 추가 매개 변수가 있는 쿼리
+        - 추가 옵션의 개체를 전달하는 것이 일반적입니다
+
+```javascript
+// An individual todo
+useQuery(['todo', 5], ...)
+// queryKey === ['todo', 5]
+
+// And individual todo in a "preview" format
+useQuery(['todo', 5, { preview: true }], ...)
+
+// A list of todos that are "done"
+useQuery(['todos', { type: done }], ...)
+// queryKey === ['todos', { type: 'done' }]
+```
+
+> 쿼리 키 매개 변수가 동일한 구성 요소에서 시간이 지남에 따라 변경될 경우, 계산된 값에 대한 `ref`(참조)로 모든 쿼리 키 매개 변수를 전달합니다.
+
+```javascript
+const id = ref(5);
+useQuery(['todo', id], ...)
+```
+
+- Query Keys are hashed deterministically!(쿼리 키는 결정적으로 해시됩니다!)
+    - 즉, 개체의 키 순서에 상관없이 다음 쿼리는 모두 동일한 것으로 간주됩니다:
+    ```javascript
+    useQuery(['todos', { status, page }], ...)
+    useQuery(['todos', { page, status }], ...)
+    useQuery(['todos', { page, status, other: undefined }], ...)
+    ```
+
+    - 그러나 다음 쿼리 키는 같지 않습니다. 배열 항목 순서가 중요합니다!
+    ```javascript
+    useQuery(['todos', status, page], ...)
+    useQuery(['todos', page, status], ...)
+    useQuery(['todos', undefined, page, status], ...)
+    ```
+
+- If your query function depends on a variable, include it in your query key(쿼리 함수가 변수에 의존하는 경우 쿼리 키에 포함)
+    - 쿼리 키는 가져오는 데이터를 고유하게 설명하기 때문에 쿼리 함수에 사용하는 변수가 변경되는 것을 포함해야 합니다. 예를 들어 다음과 같습니다:
+    ```javascript
+    function useTodos(todoId) {
+        const queryKey = ["todos", todoId];
+        const result = useQuery(queryKey, () => fetchTodoById(todoId.value));
+    }
+    ```
+
+### Query Functions
+> Vue 반응성 시스템의 일반적인 함정을 피하기 위해 queryKey 변수에 대해 먼저 읽어보시기 바랍니다.
+
+- 쿼리 함수는 말 그대로 `returns a promise` 모든 함수가 될 수 있습니다. 반환되는 promise는 `resolve the data`하거나 `throw an error`시킵니다.
+
+- 다음은 모두 유효한 쿼리 함수 구성입니다:
+
+```javascript
+useQuery(['todos'], fetchAllTodos);
+useQuery(['todos', todoId], () => fetchTodoById(todoId));
+useQuery(['todos', todoId], async () => {
+    const data = await fetchTodoById(todoId);
+    return data;
+});
+useQuery(['todos', todoId], ({ queryKey }) => fetchTodoById(queryKey[1]));
+```
+
+- Handling and Throwing Errors
+    - Vue Query가 쿼리에 오류가 발생했다고 판단하려면 쿼리 함수가 던져야 합니다. 쿼리 함수에 던진 오류는 쿼리의 `error` 상태에 지속됩니다.
+
+    ```javascript
+    const { error } = useQuery(['todos', todoId], async () => {
+        if (somethingGoesWrong) {
+            throw new Error('Oh no!');
+        }
+
+        return data;
+    });
+    ```
+
+- Usage with fetch and other clients that do not throw by default(기본적으로 던지지 않는 fetch 및 기타 클라이언트에서의 사용)
+    - `axios`나 `graphql-request`와 같은 대부분의 유틸리티는 실패한 HTTP 호출에 대해 자동으로 오류를 생성하지만, `fetch`와 같은 일부 유틸리티는 기본적으로 오류를 생성하지 않습니다. 이 경우 사용자가 직접 오류를 생성해야 합니다. 인기 있는 `fetch` API를 사용하여 간단한 방법은 다음과 같습니다:
+    ```javascript
+    useQuery(['todos', todoId], async () => {
+        const response = await fetch('/todos/' + todoId);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    });
+    ```
+
+- Query Function Variables
+    - 쿼리 키는 가져올 데이터를 고유하게 식별하기 위한 것일 뿐만 아니라 쿼리 기능에 편리하게 전달됩니다. 이를 통해 필요한 경우 쿼리 기능을 추출할 수 있습니다:
+    ```javascript
+    function useTodos(status, page) {
+        const result = useQuery(['todos', { status, page }], fetchTodoList);
+    }
+
+    // Access the key, status and page variables in your query function!
+    // 쿼리 기능의 키, 상태 및 페이지 변수에 액세스할 수 있습니다!
+    function fetchTodoList({ queryKey }) {
+        const status = queryKey[1].status;
+        const page = queryKey[1].page;
+        return new Promise();
+    }
+    ```
+
+- Using a Query Object instead of parameters
+    - `[queryKey, queryFn, config]` 서명이 VueQuery의 API를 통해 지원되는 모든 위치에서 개체를 사용하여 동일한 구성을 표현할 수도 있습니다:
+    ```javascript
+    import { useQuery } from 'vue-query';
+
+    useQuery({
+        queryKey: ['todo', 7],
+        queryFn: fetchTodo,
+        ...config,
+    });
+    ```
+
+### Parallel Queries
+- "병렬" 쿼리는 동시에 가져오기를 최대화하기 위해 병렬로 또는 동시에 실행되는 쿼리입니다.
+
+- Manual Parallel Queries
+    - 병렬 쿼리의 수가 변경되지 않을 때는 병렬 쿼리를 사용하기 위한 추가적인 노력이 없습니다. 뷰 쿼리의 임의의 수의 `useQuery`와 `useInfiniteQuery` 후크를 나란히 사용하면 됩니다!
+    ```javascript
+    // The following queries will execute in parallel
+    const usersQuery = useQuery('users', fetchUsers);
+    const teamsQuery = useQuery('teams', fetchTeams);
+    const projectsQuery = useQuery('projects', fetchProjects);
+    ```
+    > 서스펜스 모드에서 뷰 쿼리를 사용할 때, 첫 번째 쿼리는 다른 쿼리가 실행되기 전에 설치 기능을 일시 중단하기 때문에 이러한 병렬 방식은 작동하지 않습니다. 이 문제를 해결하려면 `useQueries` 후크(제안됨)를 사용하거나 각 `useQuery` 인스턴스에 대해 별도의 구성 요소로 자신의 병렬 방식을 조정해야 합니다(레임).
+
+- Dynamic Parallel Queries with `useQueries`
+    - 실행해야 하는 쿼리의 수가 구성 요소의 수명에 걸쳐 변경되는 경우 수동 쿼리를 사용할 수 없습니다. 이는 `<script setup>` 또는 `setup()` 함수에서 동기적으로 실행되어야 하므로 합성 가능 규칙에 위배되므로 수동 쿼리를 사용할 수 없습니다. 대신 뷰 쿼리는 `useQueries` 후크를 제공하여 원하는 만큼의 쿼리를 병렬로 동적으로 실행할 수 있습니다.
+
+    - `useQueries`는 쿼리 옵션 개체의 배열을 허용하고 쿼리 결과의 반응형 배열을 반환합니다:
+    ```javascript
+    const users = computed(...)
+    const usersQueriesOptions = computed(() => users.value.map(user => {
+        return {
+            queryKey: ['user', user.id],
+            queryFn: () => fetchUserById(user.id);
+        }
+    }));
+
+    const userQueries = useQueries(usersQueriesOptions);
+    ```
+
+### Dependent Queries(종속 쿼리)
+- 종속(또는 직렬) 쿼리는 실행하기 전에 완료할 이전 쿼리에 따라 결정됩니다. 이렇게 하려면 실행할 준비가 되었을 때 `enabled` 옵션으로!
+```javascript
+// Main Query - get the user
+function useUserQuery(email) {
+    return useQuery(['user', email], () => getUserByEmail(email.value));
+}
+
+// Dependant query - get the user's projects
+function useUserProjectsQuery(userId, { enabled }) {
+    return useQuery(['projects', userId], () => getProjectsByUser(userId.value), {
+        enabled, // The query will not execute until `enabled === true`
+    });
+}
+
+// Get the user
+const { data: user } = useUserQuery(email);
+
+const userId = computed(() => user.value?.id);
+const enabled = computed(() => !!user.value?.id);
+
+// Then get the user's projects
+const { isIdle, data: projects } = useUserProjectsQuery(userId, { enabled });
+
+// isIdle will be `true` until `enabled` is true and the query begins to fetch.
+// It will then go the `isLoading` stage and hopefully the `isSuccess` stage :)
+// isIdle은 'enabled'가 true이고 쿼리가 가져오기 시작할 때까지 'true'가 됩니다.
+// 그러면 isLoading 단계가 되고 isSuccess 단계가 되기를 바랍니다 :)
+```
+
