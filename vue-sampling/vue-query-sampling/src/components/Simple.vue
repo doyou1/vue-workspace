@@ -35,4 +35,8 @@ const { isLoading, isError, isFetching, data, error, refetch } = useQuery(
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+ul {
+  list-style: none;
+}
+</style>
