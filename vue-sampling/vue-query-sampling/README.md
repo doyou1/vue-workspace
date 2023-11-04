@@ -353,3 +353,4 @@ const { isIdle, data: projects } = useUserProjectsQuery(userId, { enabled });
 // 그러면 isLoading 단계가 되고 isSuccess 단계가 되기를 바랍니다 :)
 ```
 
+### Background Fetching Indicators
