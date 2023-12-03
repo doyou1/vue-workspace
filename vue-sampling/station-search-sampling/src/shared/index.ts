@@ -20,8 +20,3 @@ export type Pref = {
   pref_cd: number;
   pref_name: string;
 };
-
-export type AutocompleteItem = Record<
-  "value",
-  { stationName: string; prefName: string }
->;

@@ -1,8 +1,28 @@
-import { Station, Pref, AutocompleteItem } from "@/shared";
+import { Station, Pref } from "@/shared";
 import axios from "axios";
 import { AutocompleteFetchSuggestionsCallback } from "element-plus";
 import { ComputedRef, Ref, computed } from "vue";
 import { useQuery } from "vue-query";
+
+export type SearchInput = {
+  inputValue: string;
+  prefValue: string;
+  stationGroupCode: number;
+  stationPosition: {
+    lat: number;
+    lng: number;
+  };
+};
+
+export type AutocompleteItem = Record<
+  "value",
+  {
+    stationName: string;
+    prefName: string;
+    stationGroupCode: number;
+    stationPosition: { lat: number; lng: number };
+  }
+>;
 
 export const usePrefData = () => {
   const { isLoading, isError, data, error, isFetching } = useQuery(
@@ -26,8 +46,8 @@ export const usePrefData = () => {
 };
 
 export const useStationSearch = (
-  meValue: Ref<{ inputValue: string; prefValue: string }>,
-  youValue: Ref<{ inputValue: string; prefValue: string }>,
+  meValue: Ref<SearchInput>,
+  youValue: Ref<SearchInput>,
   prefData: ComputedRef<Pref[] | undefined>,
 ) => {
   const { data: meData } = useQuery(["/api/station", meValue], async () => {
@@ -65,8 +85,13 @@ export const useStationSearch = (
       );
       meItems.push({
         value: {
+          stationGroupCode: station.station_g_cd,
           stationName: station.station_name,
           prefName: pref?.pref_name ?? "",
+          stationPosition: {
+            lat: -1,
+            lng: -1,
+          },
         },
       });
     });
@@ -78,8 +103,13 @@ export const useStationSearch = (
       );
       youItems.push({
         value: {
+          stationGroupCode: station.station_g_cd,
           stationName: station.station_name,
           prefName: pref?.pref_name ?? "",
+          stationPosition: {
+            lat: -1,
+            lng: -1,
+          },
         },
       });
     });
@@ -143,21 +173,24 @@ export const useStationSearch = (
     );
   };
 
-  const handleSelect = (
-    item: Record<"value", { stationName: string; prefName: string }>,
-    type: "me" | "you",
-  ) => {
+  const handleSelect = (item: AutocompleteItem, type: "me" | "you") => {
     if (type === "me") {
       meValue.value.inputValue = item.value.stationName;
       meValue.value.prefValue = item.value.prefName;
+      meValue.value.stationPosition = item.value.stationPosition;
+      meValue.value.stationGroupCode = item.value.stationGroupCode;
     } else {
       youValue.value.inputValue = item.value.stationName;
       youValue.value.prefValue = item.value.prefName;
+      youValue.value.stationPosition = item.value.stationPosition;
+      youValue.value.stationGroupCode = item.value.stationGroupCode;
     }
   };
 
   return {
     querySearch,
     handleSelect,
+    meStationData,
+    youStationData,
   };
 };
