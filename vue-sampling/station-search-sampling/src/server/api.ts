@@ -1,13 +1,30 @@
 import express from "express";
 import type { Request, Response } from "express";
+import { Station, Pref } from "@/shared";
+import station from "@/assets/station.json" assert { type: "json" };
+import pref from "@/assets/pref.json" assert { type: "json" };
+
 const api = express.Router();
+const stationData = station as Station[];
+const prefData = pref as Pref[];
 
 api.get("/", (_req, res) => res.send("api root route"));
+
+api.get("/pref", (_req: Request, res: Response) => {
+  res.status(200).json(prefData);
+});
 
 api.get(
   "/station",
   (req: Request<{}, {}, { input: string }>, res: Response) => {
-    res.status(200).json(JSON.stringify(req.query.input));
+    if (((req.query?.input as string) ?? "").length === 0)
+      res.status(200).json([]);
+    else {
+      const filtered = stationData.filter((v) =>
+        v.station_name.includes(req.query.input as string),
+      );
+      res.status(200).json(filtered);
+    }
   },
 );
 

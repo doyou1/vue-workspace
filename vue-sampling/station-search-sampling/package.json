@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev-node": "tsx watch ./src/server",
+    "dev-client": "vite",
+    "dev-server": "tsx watch ./src/server",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.ts,.vue--ignore-path .gitignore --fix src",

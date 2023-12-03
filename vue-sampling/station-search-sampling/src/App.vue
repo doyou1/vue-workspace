@@ -1,31 +1,63 @@
 <template>
   <div class="container">
     <div class="input">
-      <el-input
-        v-model="inputValue"
-        class="w-50 m-2"
+      <el-autocomplete
+        v-model="meValue.inputValue"
         size="large"
+        :fetch-suggestions="
+          (queryString, cb) => querySearch(queryString, cb, 'me')
+        "
         :prefix-icon="Search"
         placeholder="駅名を入力してください"
-      />
-      <el-button round>検索</el-button>
+        @select="handleSelect($event, 'me')"
+      >
+        <template #default="{ item }">
+          {{ `${item.value.stationName} (${item.value.prefName})` }}
+        </template>
+      </el-autocomplete>
+      <el-autocomplete
+        v-model="youValue.inputValue"
+        size="large"
+        :fetch-suggestions="
+          (queryString, cb) => querySearch(queryString, cb, 'you')
+        "
+        :prefix-icon="Search"
+        placeholder="駅名を入力してください"
+        @select="handleSelect($event, 'you')"
+      >
+        <template #default="{ item }">
+          {{ `${item.value.stationName} (${item.value.prefName})` }}
+        </template>
+      </el-autocomplete>
     </div>
-    <div class="result">
-      isLoading: {{ isLoading }} isError: {{ isError }} resultData:
-      {{ resultData }} error: {{ error }} isFetching: {{ isFetching }}
-    </div>
+    meValue: {{ meValue }} youValue: {{ youValue }}
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ElInput, ElButton } from "element-plus";
+import { ElAutocomplete } from "element-plus";
 import { Search } from "@element-plus/icons-vue";
-import { useStationSearch } from "@/composables/use-station-search";
+import {
+  usePrefData,
+  useStationSearch,
+} from "@/composables/use-station-search";
 
-const inputValue = ref("");
-const { isLoading, isError, resultData, error, isFetching } =
-  useStationSearch(inputValue);
+const meValue = ref({
+  inputValue: "",
+  prefValue: "",
+});
+
+const youValue = ref({
+  inputValue: "",
+  prefValue: "",
+});
+const { prefData } = usePrefData();
+const { querySearch, handleSelect } = useStationSearch(
+  meValue,
+  youValue,
+  prefData,
+);
 </script>
 
 <style scoped lang="scss">
@@ -37,8 +69,7 @@ const { isLoading, isError, resultData, error, isFetching } =
   flex-direction: column;
 
   .input {
-    display: flex;
-    align-items: center;
+    display: flex; /*added*/
   }
 }
 </style>
