@@ -13,17 +13,40 @@
       </div>
     </div>
     <div class="table-body">
-      <memo-content-item
-        v-for="(item, index) in contents"
-        :key="`${item.id}_${index}`"
-        :index="index"
-        :content="item"
-        @update:content="
-          (index, key, value) => $emit('update:content', index, key, value)
-        "
-      />
-      <!-- Plus -->
-      <memo-content-item :content="undefined" @add:content="$emit('add:content')"/>
+        <!-- index + 1 <= row <- left -->
+        <div  class="left">
+          <memo-content-item
+            v-for="(item, index) in splitted.left" :key="`${item.id}_${index}`"
+            :index="index"
+            :content="item"
+            @update:content="
+              (index, key, value) => $emit('update:content', index, key, value)
+            "
+          />
+          <!-- Plus -->
+          <memo-content-item
+            v-if="row >= contents.length && contents.length < row * 2"
+            :content="undefined"
+            @add:content="$emit('add:content')"
+          />
+        </div>
+        <!-- index + 1 > row <- right -->
+        <div class="right">
+          <memo-content-item
+            v-for="(item, index) in splitted.right" :key="`${item.id}_${row + index}`"
+            :index="row + index"
+            :content="item"
+            @update:content="
+              (index, key, value) => $emit('update:content', index, key, value)
+            "
+          />
+          <!-- Plus -->
+          <memo-content-item
+            v-if="row < contents.length && contents.length < row * 2"
+            :content="undefined"
+            @add:content="$emit('add:content')"
+          />
+        </div>
     </div>
   </div>
 </template>
@@ -45,7 +68,7 @@ import {
 } from "@/composables/use-form-data";
 import MemoContentItem from "@/components/content/MemoContentItem.vue";
 
-defineProps<{
+const props = defineProps<{
   contents: DataModelContent[];
 }>();
 defineEmits<{
@@ -60,7 +83,7 @@ defineEmits<{
 
 const contentContainerRef = ref<HTMLDivElement>();
 
-const innerStyle = computed(() => {
+const row = computed(() => {
   const containerHeight = contentContainerRef.value?.offsetHeight ?? 0;
   /** containerHeight > x * memoContentItemHeight + (x + 1) * memoContentItemGap */
   // (containerHeight - memoContentItemGap) / (memoContentItemHeight + memoContentItemGap) > x
@@ -72,10 +95,28 @@ const innerStyle = computed(() => {
     ),
     1,
   );
+  return row;
+});
+
+const splitted = computed(() => {
+  const left: DataModelContent[] = [];
+  const right: DataModelContent[] = [];
+
+  left.push(...props.contents.slice(0, row.value));
+  right.push(...props.contents.slice(row.value));
+
+
+  return {
+    left,
+    right
+  }
+
+})
+const innerStyle = computed(() => {
   return {
     "--memo-content-item-height": `${memoContentItemHeight}px`,
     "--memo-content-item-gap": `${memoContentItemGap}px`,
-    "--memo-content-item-row": row,
+    "--memo-content-item-row": row.value,
   };
 });
 </script>
@@ -87,7 +128,6 @@ const innerStyle = computed(() => {
   flex-direction: column;
 
   .table-head {
-    flex: 1;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding: var(--number-8);
@@ -102,14 +142,24 @@ const innerStyle = computed(() => {
 
   .table-body {
     flex: 1;
-    display: grid;
+    /* display: grid;
     padding: var(--number-8);
     gap: var(--memo-content-item-gap);
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(
       var(--memo-content-item-row),
       minmax(var(--memo-content-item-height), auto)
-    );
+    ); */
+
+    padding: var(--number-8);
+    gap: var(--memo-content-item-gap);
+    display: flex;
+    
+
+    .left,
+    .right {
+      flex: 1;
+    }
   }
 }
 </style>
