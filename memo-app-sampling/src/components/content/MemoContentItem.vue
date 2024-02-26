@@ -25,7 +25,7 @@
     </template>
     <template v-else>
       <div class="add">
-        <jh-button :text="true" size="small">
+        <jh-button :text="true" size="small" @click="$emit('add:content')">
           <icon-circle-add class="icon-color" />
         </jh-button>
       </div>
@@ -63,6 +63,7 @@ defineEmits<{
     key: DataModelContentKeys,
     value: DataModelContentValues,
   ): void;
+  (e: "add:content"): void;
 }>();
 </script>
 

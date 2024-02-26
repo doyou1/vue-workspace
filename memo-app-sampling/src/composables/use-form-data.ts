@@ -105,6 +105,14 @@ export const useFormData = () => {
     }
   };
 
+  const addContent = () => {
+    model.value.contents.push({
+      id: "id",
+      word: "",
+      meaning: "",
+    });
+  }
+
   watch(
     () => model.value,
     () => {
@@ -152,6 +160,7 @@ export const useFormData = () => {
     model,
     updateMeta,
     updateContent,
+    addContent,
     clearPath,
     refresh,
   };

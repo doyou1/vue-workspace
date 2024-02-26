@@ -23,7 +23,7 @@
         "
       />
       <!-- Plus -->
-      <memo-content-item :content="undefined" />
+      <memo-content-item :content="undefined" @add:content="$emit('add:content')"/>
     </div>
   </div>
 </template>
@@ -55,6 +55,7 @@ defineEmits<{
     key: DataModelContentKeys,
     value: DataModelContentValues,
   ): void;
+  (e: "add:content"): void;
 }>();
 
 const contentContainerRef = ref<HTMLDivElement>();
