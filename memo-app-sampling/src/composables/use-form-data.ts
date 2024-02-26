@@ -1,0 +1,119 @@
+import invariant from "tiny-invariant";
+// import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+
+export type DataModel = {
+  meta: DataModelMeta;
+  contents: DataModelContent[];
+};
+
+export type DataModelMeta = {
+  title: string;
+  repeatCount: number;
+  isLock: boolean;
+  currentMode: string;
+};
+
+export const DataModelMetaKey = {
+  title: "title",
+  repeatCount: "repeatCount",
+  isLock: "isLock",
+  currentMode: "currentMode",
+} as const;
+export type DataModelMetaKeys = keyof typeof DataModelMetaKey;
+
+export type DataModelMetaValues = string | number | boolean;
+
+export type DataModelContent = {
+  id: string;
+  word: string;
+  meaning: string;
+};
+
+export const initDataModel: DataModel = {
+  meta: {
+    title: "",
+    repeatCount: 1,
+    isLock: false,
+    currentMode: "default",
+  },
+  contents: [],
+};
+
+export const useFormData = () => {
+  const model = ref<DataModel>(JSON.parse(JSON.stringify(initDataModel)));
+  const updateMeta = (key: DataModelMetaKeys, value: DataModelMetaValues) => {
+    switch (key) {
+      case DataModelMetaKey.title: {
+        invariant(typeof value === "string");
+        model.value.meta[key] = value;
+        break;
+      }
+      case DataModelMetaKey.repeatCount: {
+        invariant(typeof value === "number");
+        model.value.meta[key] = value;
+        break;
+      }
+      case DataModelMetaKey.isLock: {
+        invariant(typeof value === "boolean");
+        model.value.meta[key] = value;
+        break;
+      }
+      case DataModelMetaKey.currentMode: {
+        invariant(typeof value === "string");
+        model.value.meta[key] = value;
+        break;
+      }
+    }
+  };
+
+  watch(
+    () => model.value,
+    () => {
+      // btoa encoding
+      if (JSON.stringify(model.value) === JSON.stringify(initDataModel)) {
+        clearPath();
+      } else {
+        history.pushState("", "", `#${btoa(JSON.stringify(model.value))}`);
+      }
+    },
+    {
+      deep: true,
+    },
+  );
+
+  const clearPath = () => {
+    history.pushState("", "", "/");
+  };
+
+  onMounted(() => {
+    if (window.location.hash !== "") {
+      // atob encoding
+      const urlData = JSON.parse(atob(window.location.hash.substring(1)));
+      if (isTargetObject(urlData)) {
+        if (JSON.stringify(urlData) === JSON.stringify(initDataModel)) {
+          clearPath();
+        } else {
+          model.value = urlData;
+        }
+      }
+    }
+  });
+
+  const isTargetObject = (data: object): data is DataModel => {
+    return Object.keys(data).some(
+      (key) => key === "meta" || key === "contents",
+    );
+  };
+
+  const refresh = () => {
+    location.reload();
+  }
+
+  return {
+    model,
+    updateMeta,
+    clearPath,
+    refresh,
+  };
+};
