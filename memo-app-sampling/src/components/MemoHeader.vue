@@ -21,6 +21,8 @@
       />
       <jh-input-number
         :model-value="meta.repeatCount"
+        :min="1"
+        :max="10"
         @update:model-value="
           (value) => $emit('update:meta', 'repeatCount', value ?? 1)
         "

@@ -19,9 +19,8 @@ export const DataModelMetaKey = {
   repeatCount: "repeatCount",
   isLock: "isLock",
   currentMode: "currentMode",
-} as const;
+};
 export type DataModelMetaKeys = keyof typeof DataModelMetaKey;
-
 export type DataModelMetaValues = string | number | boolean;
 
 export type DataModelContent = {
@@ -30,6 +29,14 @@ export type DataModelContent = {
   meaning: string;
 };
 
+export const DataModelContentKey = {
+  id: "id",
+  word: "word",
+  meaning: "meaning",
+};
+export type DataModelContentKeys = keyof typeof DataModelContentKey;
+export type DataModelContentValues = string;
+
 export const initDataModel: DataModel = {
   meta: {
     title: "",
@@ -37,7 +44,11 @@ export const initDataModel: DataModel = {
     isLock: false,
     currentMode: "default",
   },
-  contents: [],
+  contents: [{
+    id: "id",
+    word: "word",
+    meaning: "meaning",
+  }],
 };
 
 export const useFormData = () => {
@@ -62,6 +73,17 @@ export const useFormData = () => {
       case DataModelMetaKey.currentMode: {
         invariant(typeof value === "string");
         model.value.meta[key] = value;
+        break;
+      }
+    }
+  };
+  const updateContent = (index: number, key: DataModelContentKeys, value: DataModelContentValues) => {
+    switch (key) {
+      case DataModelContentKey.id:
+      case DataModelContentKey.word:
+      case DataModelContentKey.meaning: {
+        invariant(typeof value === "string");
+        model.value.contents[index][key] = value;
         break;
       }
     }
@@ -113,6 +135,7 @@ export const useFormData = () => {
   return {
     model,
     updateMeta,
+    updateContent,
     clearPath,
     refresh,
   };
