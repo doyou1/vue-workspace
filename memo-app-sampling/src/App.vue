@@ -25,5 +25,7 @@ const { model, updateMeta, clearPath, refresh } = useFormData();
   width: 750px;
   height: calc(100vh - 2rem);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 </style>

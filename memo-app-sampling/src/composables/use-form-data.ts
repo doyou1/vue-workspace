@@ -44,11 +44,23 @@ export const initDataModel: DataModel = {
     isLock: false,
     currentMode: "default",
   },
-  contents: [{
-    id: "id",
-    word: "word",
-    meaning: "meaning",
-  }],
+  contents: [
+    {
+      id: "id",
+      word: "word",
+      meaning: "meaning",
+    },
+    {
+      id: "id",
+      word: "word",
+      meaning: "meaning",
+    },
+    {
+      id: "id",
+      word: "word",
+      meaning: "meaning",
+    },
+  ],
 };
 
 export const useFormData = () => {
@@ -77,7 +89,11 @@ export const useFormData = () => {
       }
     }
   };
-  const updateContent = (index: number, key: DataModelContentKeys, value: DataModelContentValues) => {
+  const updateContent = (
+    index: number,
+    key: DataModelContentKeys,
+    value: DataModelContentValues,
+  ) => {
     switch (key) {
       case DataModelContentKey.id:
       case DataModelContentKey.word:
@@ -96,7 +112,7 @@ export const useFormData = () => {
       if (JSON.stringify(model.value) === JSON.stringify(initDataModel)) {
         clearPath();
       } else {
-        history.pushState("", "", `#${btoa(JSON.stringify(model.value))}`);
+        history.pushState("", "", `#${encoding(JSON.stringify(model.value))}`);
       }
     },
     {
@@ -110,8 +126,8 @@ export const useFormData = () => {
 
   onMounted(() => {
     if (window.location.hash !== "") {
-      // atob encoding
-      const urlData = JSON.parse(atob(window.location.hash.substring(1)));
+      // atob decoding
+      const urlData = JSON.parse(decoding(window.location.hash.substring(1)));
       if (isTargetObject(urlData)) {
         if (JSON.stringify(urlData) === JSON.stringify(initDataModel)) {
           clearPath();
@@ -130,7 +146,7 @@ export const useFormData = () => {
 
   const refresh = () => {
     location.reload();
-  }
+  };
 
   return {
     model,
@@ -140,3 +156,17 @@ export const useFormData = () => {
     refresh,
   };
 };
+
+// const utf8_to_b64 = ( value: string) => {
+  const encoding = ( value: string) => {
+  return window.btoa(unescape(encodeURIComponent( value )));
+}
+
+// decoding
+// function b64_to_utf8( str ) {
+  const decoding = ( value: string ) => {
+  return decodeURIComponent(escape(window.atob( value )));
+}
+
+export const memoContentItemHeight = 75;
+export const memoContentItemGap = 16;
