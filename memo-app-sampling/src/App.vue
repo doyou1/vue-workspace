@@ -8,7 +8,10 @@
         refresh();
       "
     />
-    <memo-content-view :contents="model.contents"/>
+    <memo-content-view
+      :contents="model.contents"
+      @update:content="updateContent"
+    />
   </div>
 </template>
 
@@ -17,7 +20,7 @@ import MemoHeader from "@/components/MemoHeader.vue";
 import MemoContentView from "@/components/MemoContentView.vue";
 import { useFormData } from "@/composables/use-form-data";
 
-const { model, updateMeta, clearPath, refresh } = useFormData();
+const { model, updateMeta, updateContent, clearPath, refresh } = useFormData();
 </script>
 
 <style scoped lang="scss">
