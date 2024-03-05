@@ -1,5 +1,10 @@
 <template>
-  <el-button v-bind="props" v-on="buttonEmits" @click="$emit('click', $event)">
+  <el-button
+    v-bind="props"
+    :tabindex="tabindex"
+    v-on="buttonEmits"
+    @click="$emit('click', $event)"
+  >
     <slot />
   </el-button>
 </template>
@@ -14,7 +19,13 @@ export default {
 import { ElButton, buttonProps, buttonEmits } from "element-plus";
 import { defineProps, defineEmits } from "vue";
 
-const props = defineProps({ ...buttonProps });
+const props = defineProps({
+  ...buttonProps,
+  tabindex: {
+    type: Number,
+    default: 0,
+  },
+});
 defineEmits({ ...buttonEmits });
 </script>
 

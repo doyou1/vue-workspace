@@ -18,7 +18,7 @@
         />
       </div>
       <div class="menu">
-        <jh-button :text="true" size="small">
+        <jh-button :text="true" size="small" :tabindex="-1">
           <icon-more class="icon-color" />
         </jh-button>
       </div>

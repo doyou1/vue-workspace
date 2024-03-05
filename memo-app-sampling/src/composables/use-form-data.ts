@@ -37,12 +37,13 @@ export const initDataModel: DataModel = {
 export const useFormData = () => {
   const model = ref<DataModel>(JSON.parse(JSON.stringify(initDataModel)));
 
-
   function updateMeta<K extends keyof DataModelMeta>(key: K, value: DataModelMeta[K]) {
+    if (model.value.meta.isLock) return;
     model.value.meta[key] = value;
   }
 
   function updateContent<K extends keyof DataModelContent>(index: number, key: K, value: DataModelContent[K]) {
+    if (model.value.meta.isLock) return;
     model.value.contents[index][key] = value;
   }
 
