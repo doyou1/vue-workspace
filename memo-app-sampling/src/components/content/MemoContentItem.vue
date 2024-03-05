@@ -5,7 +5,7 @@
         <jh-input
           :model-value="content.word"
           placeholder="Word..."
-          @update:model-value="$emit('update:content', index, 'word', $event)"
+          @update:model-value="emits('update:content', index, 'word', $event)"
         />
       </div>
       <div class="meaning">
@@ -13,7 +13,7 @@
           :model-value="content.meaning"
           placeholder="Meaning..."
           @update:model-value="
-            $emit('update:content', index, 'meaning', $event)
+            emits('update:content', index, 'meaning', $event)
           "
         />
       </div>
@@ -25,7 +25,7 @@
     </template>
     <template v-else>
       <div class="add">
-        <jh-button :text="true" size="small" @click="$emit('add:content')">
+        <jh-button :text="true" size="small" @click="emits('add:content')">
           <icon-circle-add class="icon-color" />
         </jh-button>
       </div>
@@ -43,8 +43,6 @@ export default {
 import { defineProps, defineEmits } from "vue";
 import {
   DataModelContent,
-  DataModelContentKeys,
-  DataModelContentValues,
 } from "@/composables/use-form-data";
 import JhInput from "@/components/commons/JhInput.vue";
 import JhButton from "@/components/commons/JhButton.vue";
@@ -56,12 +54,12 @@ defineProps<{
   content?: DataModelContent;
 }>();
 
-defineEmits<{
-  (
+const emits = defineEmits<{
+  <K extends keyof DataModelContent>(
     e: "update:content",
     index: number,
-    key: DataModelContentKeys,
-    value: DataModelContentValues,
+    key: K,
+    value: DataModelContent[K],
   ): void;
   (e: "add:content"): void;
 }>();
@@ -70,8 +68,6 @@ defineEmits<{
 <style scoped>
 .content-item {
   height: var(--memo-content-item-height);
-  border: 1px solid var(--color-gray-100);
-
   display: grid;
   justify-content: center;
   align-items: center;

@@ -1,5 +1,3 @@
-import invariant from "tiny-invariant";
-// import { onMounted, ref, watch } from "vue";
 import { onMounted, ref, watch } from "vue";
 
 export type DataModel = {
@@ -14,28 +12,11 @@ export type DataModelMeta = {
   currentMode: string;
 };
 
-export const DataModelMetaKey = {
-  title: "title",
-  repeatCount: "repeatCount",
-  isLock: "isLock",
-  currentMode: "currentMode",
-};
-export type DataModelMetaKeys = keyof typeof DataModelMetaKey;
-export type DataModelMetaValues = string | number | boolean;
-
 export type DataModelContent = {
-  id: string;
+  id: number;
   word: string;
   meaning: string;
 };
-
-export const DataModelContentKey = {
-  id: "id",
-  word: "word",
-  meaning: "meaning",
-};
-export type DataModelContentKeys = keyof typeof DataModelContentKey;
-export type DataModelContentValues = string;
 
 export const initDataModel: DataModel = {
   meta: {
@@ -46,68 +27,28 @@ export const initDataModel: DataModel = {
   },
   contents: [
     {
-      id: "id",
-      word: "word",
-      meaning: "meaning",
-    },
-    {
-      id: "id",
-      word: "word",
-      meaning: "meaning",
-    },
-    {
-      id: "id",
-      word: "word",
-      meaning: "meaning",
+      id: 1,
+      word: "",
+      meaning: "",
     },
   ],
 };
 
 export const useFormData = () => {
   const model = ref<DataModel>(JSON.parse(JSON.stringify(initDataModel)));
-  const updateMeta = (key: DataModelMetaKeys, value: DataModelMetaValues) => {
-    switch (key) {
-      case DataModelMetaKey.title: {
-        invariant(typeof value === "string");
-        model.value.meta[key] = value;
-        break;
-      }
-      case DataModelMetaKey.repeatCount: {
-        invariant(typeof value === "number");
-        model.value.meta[key] = value;
-        break;
-      }
-      case DataModelMetaKey.isLock: {
-        invariant(typeof value === "boolean");
-        model.value.meta[key] = value;
-        break;
-      }
-      case DataModelMetaKey.currentMode: {
-        invariant(typeof value === "string");
-        model.value.meta[key] = value;
-        break;
-      }
-    }
-  };
-  const updateContent = (
-    index: number,
-    key: DataModelContentKeys,
-    value: DataModelContentValues,
-  ) => {
-    switch (key) {
-      case DataModelContentKey.id:
-      case DataModelContentKey.word:
-      case DataModelContentKey.meaning: {
-        invariant(typeof value === "string");
-        model.value.contents[index][key] = value;
-        break;
-      }
-    }
-  };
+
+
+  function updateMeta<K extends keyof DataModelMeta>(key: K, value: DataModelMeta[K]) {
+    model.value.meta[key] = value;
+  }
+
+  function updateContent<K extends keyof DataModelContent>(index: number, key: K, value: DataModelContent[K]) {
+    model.value.contents[index][key] = value;
+  }
 
   const addContent = () => {
     model.value.contents.push({
-      id: "id",
+      id: model.value.contents.length + 1,
       word: "",
       meaning: "",
     });

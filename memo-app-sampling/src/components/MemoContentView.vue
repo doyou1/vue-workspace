@@ -20,14 +20,14 @@
             :index="index"
             :content="item"
             @update:content="
-              (index, key, value) => $emit('update:content', index, key, value)
+              (index, key, value) => emits('update:content', index, key, value)
             "
           />
           <!-- Plus -->
           <memo-content-item
             v-if="row >= contents.length && contents.length < row * 2"
             :content="undefined"
-            @add:content="$emit('add:content')"
+            @add:content="emits('add:content')"
           />
         </div>
         <!-- index + 1 > row <- right -->
@@ -37,14 +37,14 @@
             :index="row + index"
             :content="item"
             @update:content="
-              (index, key, value) => $emit('update:content', index, key, value)
+              (index, key, value) => emits('update:content', index, key, value)
             "
           />
           <!-- Plus -->
           <memo-content-item
             v-if="row < contents.length && contents.length < row * 2"
             :content="undefined"
-            @add:content="$emit('add:content')"
+            @add:content="emits('add:content')"
           />
         </div>
     </div>
@@ -63,20 +63,18 @@ import {
   DataModelContent,
   memoContentItemHeight,
   memoContentItemGap,
-  DataModelContentKeys,
-  DataModelContentValues,
 } from "@/composables/use-form-data";
 import MemoContentItem from "@/components/content/MemoContentItem.vue";
 
 const props = defineProps<{
   contents: DataModelContent[];
 }>();
-defineEmits<{
-  (
+const emits = defineEmits<{
+  <K extends keyof DataModelContent>(
     e: "update:content",
     index: number,
-    key: DataModelContentKeys,
-    value: DataModelContentValues,
+    key: K,
+    value: DataModelContent[K],
   ): void;
   (e: "add:content"): void;
 }>();
@@ -101,11 +99,8 @@ const row = computed(() => {
 const splitted = computed(() => {
   const left: DataModelContent[] = [];
   const right: DataModelContent[] = [];
-
   left.push(...props.contents.slice(0, row.value));
   right.push(...props.contents.slice(row.value));
-
-
   return {
     left,
     right
@@ -142,15 +137,6 @@ const innerStyle = computed(() => {
 
   .table-body {
     flex: 1;
-    /* display: grid;
-    padding: var(--number-8);
-    gap: var(--memo-content-item-gap);
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(
-      var(--memo-content-item-row),
-      minmax(var(--memo-content-item-height), auto)
-    ); */
-
     padding: var(--number-8);
     gap: var(--memo-content-item-gap);
     display: flex;

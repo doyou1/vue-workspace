@@ -1,14 +1,14 @@
 <template>
   <header class="header">
     <div class="left">
-      <jh-button :text="true" size="small" @click="$emit('click:home')">
+      <jh-button :text="true" size="small" @click="emits('click:home')">
         <div class="home-btn h2-text-b">단어장</div>
       </jh-button>
       <jh-input
         :model-value="meta.title"
         width="200px"
         placeholder="Title..."
-        @update:model-value="(value) => $emit('update:meta', 'title', value)"
+        @update:model-value="(value) => emits('update:meta', 'title', value)"
       />
     </div>
     <div class="right">
@@ -16,7 +16,7 @@
         :model-value="meta.currentMode"
         :options="modes"
         @update:model-value="
-          (value) => $emit('update:meta', 'currentMode', value)
+          (value) => emits('update:meta', 'currentMode', value)
         "
       />
       <jh-input-number
@@ -24,14 +24,14 @@
         :min="1"
         :max="10"
         @update:model-value="
-          (value) => $emit('update:meta', 'repeatCount', value ?? 1)
+          (value) => emits('update:meta', 'repeatCount', value ?? 1)
         "
       />
       <div class="buttons">
         <jh-button
           :text="true"
           size="small"
-          @click="$emit('update:meta', 'isLock', !meta.isLock)"
+          @click="emits('update:meta', 'isLock', !meta.isLock)"
         >
           <icon-lock-open v-if="!meta.isLock" class="icon-color" />
           <icon-lock-close v-else class="icon-color" />
@@ -65,16 +65,14 @@ import IconCopy from "@/components/commons/images/IconCopy.vue";
 import IconImportExport from "@/components/commons/images/IconImportExport.vue";
 import {
   DataModelMeta,
-  DataModelMetaKeys,
-  DataModelMetaValues,
 } from "@/composables/use-form-data";
 
 defineProps<{
   meta: DataModelMeta;
 }>();
 
-defineEmits<{
-  (e: "update:meta", key: DataModelMetaKeys, value: DataModelMetaValues): void;
+const emits = defineEmits<{
+  <K extends keyof DataModelMeta>(e: "update:meta", key: K, value: DataModelMeta[K]): void;
   (e: "click:home"): void;
 }>();
 
