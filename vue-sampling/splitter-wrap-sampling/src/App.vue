@@ -1,6 +1,6 @@
 <template>
   <div>
-    <jh-splitter unstyled>
+    <jh-splitter>
         <jh-splitter-panel> Panel 1 </jh-splitter-panel>
         <jh-splitter-panel> Panel 2 </jh-splitter-panel>
         <jh-splitter-panel> Panel 3 </jh-splitter-panel>
